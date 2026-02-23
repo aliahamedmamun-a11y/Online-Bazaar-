@@ -8,21 +8,20 @@ export default function Checkout() {
   const handleCheckout = async () => {
     setLoading(true);
 
-    // Example order data
     const order = {
       id: Date.now(),
       items: [{ id: 1, name: "Laptop", price: 1200, quantity: 1 }],
       total: 1200,
     };
 
-    // 1. Save order (Orders API)
+    // Save order
     await fetch("/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),
     });
 
-    // 2. Stripe payment session
+    // Stripe payment
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,12 +37,19 @@ export default function Checkout() {
   };
 
   return (
-    <div>
-      <h1>Checkout - Online Bazaar</h1>
-      <button onClick={handleCheckout} disabled={loading}>
+    <div className="p-6 max-w-lg mx-auto bg-white dark:bg-gray-800 shadow-md rounded-lg">
+      <h1 className="text-2xl font-bold mb-4 dark:text-white">Checkout</h1>
+      <p className="text-gray-600 dark:text-gray-300 mb-6">
+        Review your order and proceed to payment.
+      </p>
+      <button
+        onClick={handleCheckout}
+        disabled={loading}
+        className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
+      >
         {loading ? "Processing..." : "Pay with Stripe"}
       </button>
-      {message && <p>{message}</p>}
+      {message && <p className="mt-4 text-green-600">{message}</p>}
     </div>
   );
 }
