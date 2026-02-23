@@ -1,14 +1,18 @@
+// components/Testimonials.js
 export default function Testimonials() {
   const testimonials = [
     {
+      id: 1,
       name: "Rahim",
       review: "Online Bazaar is amazing! Fast delivery and great products.",
     },
     {
+      id: 2,
       name: "Karim",
       review: "I love the clean design and easy checkout process.",
     },
     {
+      id: 3,
       name: "Ayesha",
       review: "Best shopping experience I’ve had online!",
     },
@@ -20,9 +24,9 @@ export default function Testimonials() {
         What Our Customers Say
       </h2>
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-        {testimonials.map((t, index) => (
+        {testimonials.map((t) => (
           <div
-            key={index}
+            key={t.id}
             className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6"
           >
             <p className="text-gray-700 dark:text-gray-300 mb-4">"{t.review}"</p>
