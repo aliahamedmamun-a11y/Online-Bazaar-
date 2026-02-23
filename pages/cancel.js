@@ -1,3 +1,4 @@
+// pages/cancel.js
 export default function Cancel() {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-red-50 dark:bg-gray-900">
@@ -9,7 +10,7 @@ export default function Cancel() {
       </p>
       <a
         href="/cart"
-        className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700"
+        className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition duration-300"
       >
         Go back to Cart
       </a>
