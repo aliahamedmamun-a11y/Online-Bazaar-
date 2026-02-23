@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
+import Pusher from "pusher-js";
 
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    fetch("/api/notifications")
-      .then((res) => res.json())
-      .then((data) => setNotifications(data));
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+      cluster: "ap2",
+    });
+
+    const channel = pusher.subscribe("notifications-channel");
+    channel.bind("new-notification", (data) => {
+      setNotifications((prev) => [data, ...prev]);
+    });
+
+    return () => {
+      pusher.unsubscribe("notifications-channel");
+    };
   }, []);
 
   return (
@@ -16,9 +26,9 @@ export default function Notifications() {
         <p className="text-gray-600 dark:text-gray-300">No notifications yet.</p>
       ) : (
         <div className="space-y-4">
-          {notifications.map((n) => (
+          {notifications.map((n, index) => (
             <div
-              key={n.id}
+              key={index}
               className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 flex justify-between items-center"
             >
               <div>
