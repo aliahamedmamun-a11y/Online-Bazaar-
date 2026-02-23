@@ -1,5 +1,5 @@
-
 import { useEffect, useState } from "react";
+import ProductCard from "../components/ProductCard";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -10,16 +10,24 @@ export default function Products() {
       .then((data) => setProducts(data));
   }, []);
 
+  const addToCart = async (product) => {
+    await fetch("/api/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(product),
+    });
+    alert(`${product.name} added to cart!`);
+  };
+
   return (
-    <div>
-      <h1>Our Products</h1>
-      <ul>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6 dark:text-white">Our Products</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {products.map((p) => (
-          <li key={p.id}>
-            {p.name} - ${p.price}
-          </li>
+          <ProductCard key={p.id} product={p} addToCart={addToCart} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
+
