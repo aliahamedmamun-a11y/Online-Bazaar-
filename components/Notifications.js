@@ -1,3 +1,4 @@
+// components/Notifications.js
 import { useEffect, useState } from "react";
 import Pusher from "pusher-js";
 
@@ -15,7 +16,8 @@ export default function Notifications() {
     });
 
     return () => {
-      pusher.unsubscribe("notifications-channel");
+      channel.unbind_all();
+      channel.unsubscribe();
     };
   }, []);
 
@@ -36,7 +38,7 @@ export default function Notifications() {
                 <p className="text-gray-600 dark:text-gray-300">{n.message}</p>
               </div>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                {new Date(n.date).toLocaleString()}
+                {n.date ? new Date(n.date).toLocaleString() : "Just now"}
               </span>
             </div>
           ))}
