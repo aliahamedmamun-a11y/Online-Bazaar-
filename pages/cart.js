@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 export default function Cart() {
   const [cart, setCart] = useState([]);
 
-  // Cart data fetch করা
   useEffect(() => {
     fetch("/api/cart")
       .then((res) => res.json())
       .then((data) => setCart(data));
   }, []);
 
-  // Product remove করা
   const removeFromCart = async (id) => {
     await fetch("/api/cart", {
       method: "DELETE",
@@ -21,19 +19,34 @@ export default function Cart() {
   };
 
   return (
-    <div>
-      <h1>Your Cart</h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6 dark:text-white">Your Cart</h1>
       {cart.length === 0 ? (
-        <p>No items in cart</p>
+        <p className="text-gray-600 dark:text-gray-300">No items in cart</p>
       ) : (
-        <ul>
+        <div className="space-y-4">
           {cart.map((item) => (
-            <li key={item.id}>
-              {item.name} - ${item.price}
-              <button onClick={() => removeFromCart(item.id)}>Remove</button>
-            </li>
+            <div
+              key={item.id}
+              className="flex justify-between items-center bg-white dark:bg-gray-800 shadow-md rounded-lg p-4"
+            >
+              <div>
+                <h2 className="text-lg font-semibold dark:text-white">
+                  {item.name}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  ${item.price}
+                </p>
+              </div>
+              <button
+                onClick={() => removeFromCart(item.id)}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Remove
+              </button>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
