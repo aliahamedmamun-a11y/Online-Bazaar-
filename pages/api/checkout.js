@@ -1,28 +1,36 @@
+// pages/api/orders.js
 import stripe from "../../lib/stripe";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
+      const { items } = req.body;
+
+      if (!items || !Array.isArray(items)) {
+        return res.status(400).json({ error: "Invalid items data" });
+      }
+
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
-        line_items: req.body.items.map((item) => ({
+        line_items: items.map((item) => ({
           price_data: {
             currency: "usd",
-            product_data: { name: item.name },
-            unit_amount: item.price * 100,
+            product_data: { name: item.name || "Unnamed Product" },
+            unit_amount: (item.price ?? 0) * 100, // fallback if price missing
           },
-          quantity: item.quantity,
+          quantity: item.quantity ?? 1,
         })),
         mode: "payment",
-        success_url: "http://localhost:3000/success",
-        cancel_url: "http://localhost:3000/cancel",
+        success_url: `${req.headers.origin}/success`,
+        cancel_url: `${req.headers.origin}/cancel`,
       });
 
-      res.status(200).json({ id: session.id });
+      return res.status(200).json({ id: session.id });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error("Stripe checkout error:", error);
+      return res.status(500).json({ error: error.message });
     }
-  } else {
-    res.status(405).json({ message: "Method not allowed" });
   }
+
+  return res.status(405).json({ message: "Method not allowed" });
 }
