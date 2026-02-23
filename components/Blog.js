@@ -1,16 +1,20 @@
+// components/Blog.js
 export default function Blog() {
   const posts = [
     {
+      id: 1,
       title: "Big Sale Coming Soon!",
       date: "Feb 20, 2026",
       excerpt: "Get ready for our mega sale with up to 50% off selected items.",
     },
     {
+      id: 2,
       title: "New Arrivals in Electronics",
       date: "Feb 15, 2026",
       excerpt: "We’ve added the latest gadgets to Online Bazaar. Check them out now!",
     },
     {
+      id: 3,
       title: "Customer Loyalty Program",
       date: "Feb 10, 2026",
       excerpt: "Earn points with every purchase and redeem them for discounts.",
@@ -23,9 +27,9 @@ export default function Blog() {
         Latest Updates & Offers
       </h2>
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-        {posts.map((post, index) => (
+        {posts.map((post) => (
           <div
-            key={index}
+            key={post.id}
             className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6"
           >
             <h3 className="text-lg font-semibold mb-2 dark:text-white">
